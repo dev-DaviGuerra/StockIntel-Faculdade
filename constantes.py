@@ -27,11 +27,13 @@ else:
     DB_PORT = os.getenv("DB_PORT")
     DB_NAME = os.getenv("DB_NAME")
     
-    if DB_PASS:
-        DB_PASS_ENCODED = urllib.parse.quote_plus(DB_PASS)
-        DB_STRING = f"postgresql://{DB_USER}:{DB_PASS_ENCODED}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    else:
-        DB_STRING = f"postgresql://{DB_USER}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    if not DB_PASS:
+        raise RuntimeError(
+            "DB_PASS não definido. Configure a senha do banco no arquivo .env."
+        )
+
+    DB_PASS_ENCODED = urllib.parse.quote_plus(DB_PASS)
+    DB_STRING = f"postgresql://{DB_USER}:{DB_PASS_ENCODED}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 TICKER = "AAPL"
 EMPRESA = "Apple Inc."
